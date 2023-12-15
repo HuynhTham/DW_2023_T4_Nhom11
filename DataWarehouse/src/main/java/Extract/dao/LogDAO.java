@@ -1,6 +1,6 @@
 package Extract.dao;
 
-import entity.Logs;
+import Extract.entity.Logs;
 import org.jdbi.v3.core.Handle;
 
 import java.sql.Timestamp;
