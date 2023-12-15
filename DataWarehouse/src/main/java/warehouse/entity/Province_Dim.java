@@ -11,4 +11,9 @@ public class Province_Dim {
         private String name;
         private String region;
 
+        public Province_Dim(String name, String region) {
+                this.name = name;
+                this.region = region;
+        }
+        public Province_Dim(){}
 }

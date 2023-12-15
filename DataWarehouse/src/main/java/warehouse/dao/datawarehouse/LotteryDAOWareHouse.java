@@ -14,7 +14,6 @@ import java.util.List;
 public class LotteryDAOWareHouse {
 
 
-
     private boolean isRewardIdValid(Handle handle, int rewardId) {
         String checkRewardExistenceQuery = "SELECT COUNT(*) FROM reward_dim WHERE id = ?";
         int rewardCount = handle.createQuery(checkRewardExistenceQuery)
@@ -295,52 +294,61 @@ public class LotteryDAOWareHouse {
     }
 
     public void transferLotteryResultData() {
-        if (!new LogDAO().isLastLogStatusRunning("xosohomnay","Get data from file to Staging","Success")) {
-        LotteryResultDAOStaging stagingDAO = new LotteryResultDAOStaging();
-        List<Lottery_Result> stagingData = stagingDAO.getAllStagingData();
-        LotteryDAOWareHouse warehouseDAO = new LotteryDAOWareHouse();
+        if (new LogDAO().isLastLogStatusRunning("xosohomnay", "Load Data From Staging to Data Warehouse", "Success")) {
+            new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "Loaded");
 
-        for (Lottery_Result stagingResult : stagingData) {
-            int id_reward_str = 0;
+            return;
+        }
+        if (new LogDAO().isLastLogStatusRunning("xosohomnay", "Get data from file to Staging", "Success")) {
+            LotteryResultDAOStaging stagingDAO = new LotteryResultDAOStaging();
+            List<Lottery_Result> stagingData = stagingDAO.getAllStagingData();
+            LotteryDAOWareHouse warehouseDAO = new LotteryDAOWareHouse();
 
-            // Lấy Id của tỉnh, thưởng và ngày
-            String province = stagingResult.getName_province();
-            //check provine đã có tỏng provine-dim hay ko(select)
+            for (Lottery_Result stagingResult : stagingData) {
+                int id_reward_str = 0;
+
+                // Lấy Id của tỉnh, thưởng và ngày
+                String province = stagingResult.getName_province();
+                //check provine đã có tỏng provine-dim hay ko(select)
+
 //            không insert vào province-dim
 
-            int id_province_str = warehouseDAO.getIdprovince(province);
-            if (stagingResult.getRegions().equals("Miền Nam")) {
-                id_reward_str = warehouseDAO.getReward("1");
+                int id_province_str = warehouseDAO.getIdprovince(province);
+                if (id_province_str <= 0) {
+                    new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "not found province name" + province);
+                }
+                if (stagingResult.getRegions().equals("Miền Nam")) {
+                    id_reward_str = warehouseDAO.getReward("1");
 
-            } else {
-                id_reward_str = warehouseDAO.getReward("0");
+                } else {
+                    id_reward_str = warehouseDAO.getReward("0");
 
+                }
+                int id_date_str = warehouseDAO.getIdDate(stagingResult.getDate());
+
+                // Chuyển đổi từ String sang int
+                int id_province = id_province_str;
+                int id_reward = id_reward_str;
+                int id_date = id_date_str;
+                // Map data from Staging to Data Warehouse model
+                Lottery_Result_Fact dataWarehouseResult = new Lottery_Result_Fact();
+                dataWarehouseResult.setId_province(id_province);
+                dataWarehouseResult.setId_reward(id_reward);
+                dataWarehouseResult.setId_date(id_date);
+                dataWarehouseResult.setSpecial_prize(stagingResult.getGiaiDacBiet());
+                dataWarehouseResult.setEighth_prize(stagingResult.getGiaiTam());
+                dataWarehouseResult.setSeventh_prize(stagingResult.getGiaiBay());
+                dataWarehouseResult.setSixth_prize(stagingResult.getGiaiSau());
+                dataWarehouseResult.setFifth_prize(stagingResult.getGiaiNam());
+                dataWarehouseResult.setFourth_prize(stagingResult.getGiaiTu());
+                dataWarehouseResult.setThird_prize(stagingResult.getGiaiBa());
+                dataWarehouseResult.setSecond_prize(stagingResult.getGiaiNhi());
+                dataWarehouseResult.setFirst_prize(stagingResult.getGiaiNhat());
+                // Insert data into Data Warehouse
+                insertLotteryResult(dataWarehouseResult);
             }
-            int id_date_str = warehouseDAO.getIdDate(stagingResult.getDate());
-
-            // Chuyển đổi từ String sang int
-            int id_province = id_province_str;
-            int id_reward = id_reward_str;
-            int id_date = id_date_str;
-            // Map data from Staging to Data Warehouse model
-            Lottery_Result_Fact dataWarehouseResult = new Lottery_Result_Fact();
-            dataWarehouseResult.setId_province(id_province);
-            dataWarehouseResult.setId_reward(id_reward);
-            dataWarehouseResult.setId_date(id_date);
-            dataWarehouseResult.setSpecial_prize(stagingResult.getGiaiDacBiet());
-            dataWarehouseResult.setEighth_prize(stagingResult.getGiaiTam());
-            dataWarehouseResult.setSeventh_prize(stagingResult.getGiaiBay());
-            dataWarehouseResult.setSixth_prize(stagingResult.getGiaiSau());
-            dataWarehouseResult.setFifth_prize(stagingResult.getGiaiNam());
-            dataWarehouseResult.setFourth_prize(stagingResult.getGiaiTu());
-            dataWarehouseResult.setThird_prize(stagingResult.getGiaiBa());
-            dataWarehouseResult.setSecond_prize(stagingResult.getGiaiNhi());
-            dataWarehouseResult.setFirst_prize(stagingResult.getGiaiNhat());
-            // Insert data into Data Warehouse
-            insertLotteryResult(dataWarehouseResult);
-        }
-        }else{
-            new LogDAO().insertLog("xosohomnay","Load Data From Staging to Data Warehouse","Can not run");
+        } else {
+            new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "Can not run");
         }
     }
 
