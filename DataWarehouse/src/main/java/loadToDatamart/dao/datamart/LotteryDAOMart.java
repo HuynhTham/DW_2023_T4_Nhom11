@@ -103,7 +103,7 @@ public class LotteryDAOMart {
 
             // Insert data into the dynamically created table
             String query = "INSERT INTO " + tableName + "(`id`,`full_date`, `day_of_week`, `month`, `year`) VALUES (?,?,?,?,?)";
-            handle.createUpdate(query)
+            int rowsAffected=  handle.createUpdate(query)
                     .bind(0, id)
                     .bind(1, Timestamp.valueOf(fullDate.atStartOfDay()))
                     .bind(2, dayOfWeek)
