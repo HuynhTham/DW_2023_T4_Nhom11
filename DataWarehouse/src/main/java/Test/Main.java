@@ -1,5 +1,5 @@
 package Test;
-
+import warehouse.dao.datawarehouse.LotteryDAOWareHouse;
 import Extract.module.ExtractData;
 import staging.Modules.Staging;
 
@@ -17,12 +17,21 @@ public class Main {
             return false;
         }
     }
+
     public static void main(String[] args) throws IOException {
         new ExtractData().extractData("xosohomnay");
         if (!setUTF8Output()) {
             return;
         }
         Staging.run_process();
-    }
 
+        try {
+            LotteryDAOWareHouse lotteryDAOWareHouse = new LotteryDAOWareHouse();
+            lotteryDAOWareHouse.transferLotteryResultData();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
