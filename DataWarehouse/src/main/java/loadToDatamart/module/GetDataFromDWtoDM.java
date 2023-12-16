@@ -19,7 +19,6 @@ public class GetDataFromDWtoDM {
     private static final String TO_EMAIL = "huynhtham3008@gmail.com";
 
     public static void sendEmail(String subject, String body) {
-
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -58,10 +57,20 @@ public class GetDataFromDWtoDM {
         boolean isLoadProvince = false;
         boolean isLoadReward = false;
         boolean isLoadResult = false;
-
-        //kiem tra da load du lieu vao dw Success hay không
+        /*
+            1. Load những biến trong file mart.properties
+            2. Kêt nối database control
+            =>DBContext class
+            3.Kiểm tra đã load data từ staging vào datawarehouse hay chưa
+        */
         if (!logDAO.isLastLogStatusRunning("xosohomnay", "Get data from file to Staging", "Success")) {
+            /*
+                3.1. Nếu chưa load =>Insert 1 dòng vào control.logs với status="can not run" and event_type="Load data to datamart"
+            */
             logDAO.insertLog(source, "Load data to datamart", "can not run");
+            /*
+                3.2. Đóng kết nối database control
+            */
             return;
         }
         if (logDAO.isLastLogStatusRunning("xosohomnay", "Load data to datamart", "Success")) {

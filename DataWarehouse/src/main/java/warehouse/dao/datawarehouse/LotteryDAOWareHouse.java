@@ -85,10 +85,10 @@ public class LotteryDAOWareHouse {
 
             try {
                 // Thực hiện các thao tác cơ sở dữ liệu ở đây
-                String query = "INSERT INTO province_dim (regions, name_province) VALUES (?, ?)";
+                String query = "INSERT INTO province_dim (name, region) VALUES (?, ?)";
                 int rowsAffected = handle.createUpdate(query)
-                        .bind(0, provineDim.getRegion())
-                        .bind(1, provineDim.getName())
+                        .bind(0, provineDim.getName())
+                        .bind(1, provineDim.getRegion())
                         .execute();
 
                 if (rowsAffected > 0) {
@@ -300,8 +300,10 @@ public class LotteryDAOWareHouse {
             return;
         }
         if (new LogDAO().isLastLogStatusRunning("xosohomnay", "Get data from file to Staging", "Success")) {
+            new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "Start");
+
             LotteryResultDAOStaging stagingDAO = new LotteryResultDAOStaging();
-            List<Lottery_Result> stagingData = stagingDAO.getAllStagingData();
+            List<Lottery_Result> stagingData = stagingDAO.getAllStagingData(LocalDate.now());
             LotteryDAOWareHouse warehouseDAO = new LotteryDAOWareHouse();
 
             for (Lottery_Result stagingResult : stagingData) {
@@ -314,10 +316,23 @@ public class LotteryDAOWareHouse {
 //            không insert vào province-dim
 
                 int id_province_str = warehouseDAO.getIdprovince(province);
+                String region = "";
                 if (id_province_str <= 0) {
-                    new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "not found province name" + province);
+
+
+                    if (stagingResult.getRegions().toLowerCase().contains("miền nam")) {
+                        region = "Miền Nam";
+                    } else if (stagingResult.getRegions().toLowerCase().contains("miền trung")) {
+                        region = "Miền Trung";
+
+                    } else {
+                        region = "Miền Bắc";
+                    }
+                    warehouseDAO.insertProvine(new Province_Dim("Xổ số "+ province,region));
+                    id_province_str = warehouseDAO.getIdprovince(province);
                 }
-                if (stagingResult.getRegions().equals("Miền Nam")) {
+
+                if (stagingResult.getRegions().toLowerCase().contains("miền nam")||stagingResult.getRegions().toLowerCase().contains("miền trung")) {
                     id_reward_str = warehouseDAO.getReward("1");
 
                 } else {
@@ -347,6 +362,7 @@ public class LotteryDAOWareHouse {
                 // Insert data into Data Warehouse
                 insertLotteryResult(dataWarehouseResult);
             }
+            new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "Success");
         } else {
             new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "Can not run");
         }
@@ -354,7 +370,7 @@ public class LotteryDAOWareHouse {
 
     public void transferProvinceData() {
         LotteryResultDAOStaging stagingDAO = new LotteryResultDAOStaging();
-        List<Lottery_Result> stagingData = stagingDAO.getAllStagingData();
+        List<Lottery_Result> stagingData = stagingDAO.getAllStagingData(LocalDate.now());
 
         for (Lottery_Result stagingResult : stagingData) {
             Province_Dim provinceDim = new Province_Dim();
@@ -370,7 +386,7 @@ public class LotteryDAOWareHouse {
 
     public void transferDateData() {
         LotteryResultDAOStaging stagingDAO = new LotteryResultDAOStaging();
-        List<Lottery_Result> stagingData = stagingDAO.getAllStagingData();
+        List<Lottery_Result> stagingData = stagingDAO.getAllStagingData(LocalDate.now());
 
         for (Lottery_Result stagingResult : stagingData) {
             Date_dim dateDim = new Date_dim();
@@ -383,7 +399,7 @@ public class LotteryDAOWareHouse {
     public void transferRewardData() {
         try {
             LotteryResultDAOStaging stagingDAO = new LotteryResultDAOStaging();
-            List<Lottery_Result> stagingData = stagingDAO.getAllStagingData();
+            List<Lottery_Result> stagingData = stagingDAO.getAllStagingData(LocalDate.now());
 
             for (Lottery_Result stagingResult : stagingData) {
                 // Extract reward data from stagingResult and map it to Reward_dim model
