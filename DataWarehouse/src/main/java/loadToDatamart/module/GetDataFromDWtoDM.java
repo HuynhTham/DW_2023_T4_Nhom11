@@ -19,7 +19,6 @@ public class GetDataFromDWtoDM {
     private static final String TO_EMAIL = "huynhtham3008@gmail.com";
 
     public static void sendEmail(String subject, String body) {
-
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");

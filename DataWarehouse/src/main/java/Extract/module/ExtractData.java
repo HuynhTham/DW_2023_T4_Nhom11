@@ -1,7 +1,7 @@
-package Extract.module;
+package extract.module;
 
 import Extract.dao.ControlDAO;
-import Extract.dao.LogDAO;
+import extract.dao.LogDAO;
 import Extract.entity.FileConfigs;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -282,56 +282,104 @@ public class ExtractData {
     public void extractData(String source) throws IOException {
         int i = 0;
         LocalDate dataDate = LocalDate.now();
-//        LocalDate dataDate = LocalDate.now();
         LogDAO logDAO = new LogDAO();
         ControlDAO controlDAO = new ControlDAO();
         LocalDate currentDate = LocalDate.now();
         LocalDate givenDate = dataDate;
         LocalTime currentTime = LocalTime.now(ZoneId.systemDefault());
-
-//         Check if the given date is on or after the current date and if the time is less than 17 PM
+        /*
+            1. Load những biến trong file extract.properties
+            2. Kêt nối database control
+            =>DBContext class
+            3.Kiểm tra xem giờ lấy dữ liệu từ nguồn có sau 17h hôm nay hoặc không phải là ngày của tương lai hay không
+        */
         if ((givenDate.isEqual(currentDate) && currentTime.isBefore(LocalTime.of(17, 00))) || (givenDate.isAfter(currentDate))) {
-            // The given date is on or after the current date and before 4:20 AM
-            givenDate=LocalDate.now().minusDays(1);
+            /*
+                3.1. Nếu đúng 1 trong hai trường hợp trên=> insert 1 dòng vào table control.logs
+            */
+            logDAO.insertLog(source, "Get data from source", "Should be after 17h");
+            /*
+                3.2 Gửi mail thông báo
+            */
+            sendEmail("Extract data from" + source, "Should be after 17h");
 
         }
-
-        //vao lay tat ca duong dan cua file da extract du lieu cua ngay hom qua
+        /*
+            4. Lấy đường dẫn của tất của file dữ liệu đã extracy ngày hôm qua
+        */
         ArrayList<String> file_paths = (ArrayList<String>) controlDAO.getPathFileData(givenDate.minusDays(1));
-        //kiem tra xem hom nay co extract du lieu tu nguon hay chua
+        /*
+            5. Kiểm tra xem ngày hôm nay đã extract data hay chưa
+        */
         if (logDAO.isLastLogStatusRunning(source, "Get data from source", "Success")) {
-            //neu hom nay da extract du lieu
+            /*
+                5.1. Nếu hôm nay đã Extract dữ liệu=> Insert vào control.logs
+            */
             logDAO.insertLog(source, "Get data from source", "Data was got");
+            /*
+                5.2. Gửi mail thông báo
+             */
             sendEmail("Extract data from" + source, "Today, Data was got");
 
         } else {
-            //chua extract
             for (String s : file_paths) {
-                //xoa tat ca file csv da lay ngay truoc do
+                /*
+                    6. Nếu hôm nay chưa Extract dữ liệu=> Xóa tất cả file csv đã lấy ngày trước đó
+                */
                 boolean isDelete = deleteFileData(s);
-                if (isDelete) {
-                    logDAO.insertLog(source, "Remove data file csv: " + s, "success");
+                /*
+                    7. Kiểm tra đã xóa thành công hay chưa cho từng file
+                */
+                if (!isDelete) {
+                    /*
+                        7.1.Nếu thất bại => Insert control.logs với evenType="Remove data file csv: " + tên file" and status="Fail"
+                    */
+                    logDAO.insertLog(source, "Remove data file csv: " + s, "Fail");
 
                 } else {
-                    logDAO.insertLog(source, "Remove data file csv: " + s, "fail");
-                    sendEmail("Remove data file csv" + s, "fail");
+                     /*
+                        8. Nếu thành công => Insert control.logs với evenType="Remove data file csv: " + tên file" and status="Success"
+                    */
+                    logDAO.insertLog(source, "Remove data file csv: " + s, "success");
                 }
             }
-
+            /*
+                9. Lấy ra tất cả dữ liệu config của nguồn lấy dữ liệu (https://xosohomnay.com.vn/)
+            */
             Optional<FileConfigs> fileConfigs = controlDAO.getConfigByName("https://xosohomnay.com.vn/");
-
+            /*
+                10. Insert vào table control.logsnvới status ="Start"nand evenType="Get data from source"
+             */
             logDAO.insertLog(source, "Get data from source", "Start");
-            //da extract du lieu thanh cong hay chua
+            /*
+                11. Tiến hành vào nguồn lấy dữ liệu ngày hôm nay bằng thư viện  jsoup
+                12. Kiểm tra  đã lấy dữ liệu thành công và lưu xuống file csv hay chưa
+             */
             boolean isExtract = new ExtractData().getDataFromDay(givenDate.getDayOfMonth(), givenDate.getMonthValue(), givenDate.getYear(), "https://xosohomnay.com.vn/", i, fileConfigs.get().getLocation(), fileConfigs.get().getFormat(), fileConfigs.get().getColumns());
             if (isExtract) {
-                String b = source + ".com.vn_" + givenDate.getDayOfMonth() + "_" + givenDate.getMonthValue() + "_" + givenDate.getYear();
-                String path = fileConfigs.get().getLocation();
-                String a = controlDAO.findNewestFile(path, b);
-                controlDAO.insertDataFile(a, getFileNameAfterBackslash(a));
+                /*
+                    13. Nếu thành công=> Tìm file mới nhất trong thư mục được quy định trong bảng configs
+                */
+                String filepath = controlDAO.findNewestFile(fileConfigs.get().getLocation(), source + ".com.vn_" + givenDate.getDayOfMonth() + "_" + givenDate.getMonthValue() + "_" + givenDate.getYear());
+                /*
+                    14. Insert vào table data_files với tên file và đường dẫn file
+                */
+                controlDAO.insertDataFile(filepath, getFileNameAfterBackslash(filepath));
+                /*
+                    15. Insert vào table control.logs với status ="Sucess" and evenType="Get data from source"
+                */
                 logDAO.insertLog(source, "Get data from source", "Success");
+                /*
+                    16. Gửi mail thông báo extract dữ liệu thành công
+                    17. Đóng kết nối database control
+                */
                 sendEmail("Extract data from" + source, "Success");
-
             } else {
+                /*
+                    12.1. Nếu Extract dữ liệu thất bại
+                    12.2. Gửi mail thông báo quá tình lấy dữ liệu từ nguồn thất bại
+                    12.3.Đóng kết nối database control
+                 */
                 logDAO.insertLog(source, "Get data from source", "Fail");
                 sendEmail("Get data from sources", "fail");
 

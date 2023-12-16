@@ -1,4 +1,4 @@
-package Extract.dao;
+package extract.dao;
 
 import java.io.InputStream;
 import java.sql.Connection;

@@ -1,4 +1,5 @@
-package Test;
+package test;
+
 import loadToDatamart.module.GetDataFromDWtoDM;
 import warehouse.dao.datawarehouse.LotteryDAOWareHouse;
 import Extract.module.ExtractData;

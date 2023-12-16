@@ -1,4 +1,4 @@
-package Extract.dao;
+package extract.dao;
 
 import Extract.entity.Logs;
 import org.jdbi.v3.core.Handle;
