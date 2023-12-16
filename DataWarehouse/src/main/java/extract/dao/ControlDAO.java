@@ -1,4 +1,4 @@
-package Extract.dao;
+package extract.dao;
 
 import com.opencsv.CSVReader;
 import Extract.entity.FileConfigs;
