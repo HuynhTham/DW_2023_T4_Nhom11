@@ -51,13 +51,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-//        StagingToWarehouse emailSender = new StagingToWarehouse();
-//
-//        // Gọi phương thức sendEmail với tiêu đề và nội dung tùy chọn
-//        emailSender.sendEmail("Chủ đề thử nghiệm", "Nội dung thử nghiệm");
-        CSVReader date= new CSVReader();
-        CSVResder_Province province =new CSVResder_Province();
-        CSVReader_Reward reward =new CSVReader_Reward();
+
         LotteryDAOWareHouse lottery =new LotteryDAOWareHouse();
         lottery.transferLotteryResultData();
     }

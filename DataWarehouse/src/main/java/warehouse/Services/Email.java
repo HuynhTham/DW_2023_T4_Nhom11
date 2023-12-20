@@ -1,4 +1,4 @@
-package Services;
+package warehouse.Services;
 
 public class Email {
     private String from;
@@ -44,6 +44,14 @@ public class Email {
     }
 
     public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public Email(String from, String to, String fromPassword, String content, String subject) {
+        this.from = from;
+        this.to = to;
+        this.fromPassword = fromPassword;
+        this.content = content;
         this.subject = subject;
     }
 }

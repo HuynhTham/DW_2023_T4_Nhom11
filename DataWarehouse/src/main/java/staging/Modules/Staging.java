@@ -1,9 +1,9 @@
-package staging.Modules;
+package staging.modules;
 
-import staging.DB.ControlConnect;
-import  staging.DB.StagingConnect;
+import staging.db.ControlConnect;
+import  staging.db.StagingConnect;
 import  staging.Services.Email;
-import  staging.Services.EmailUtils;
+import  staging.services.EmailUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -39,7 +39,6 @@ public class Staging {
         Connection connection = null;
         try {
             /* 4. Lấy đường dẫn đến file csv mới */
-//            String csvFilePath = "D:/datawarehouse/Datawarehouse_Extract/data/xosohomnay.com.vn_14_12_20230.csv";
             String csvFilePath = ControlConnect.getFilePath();
             /*	6. Load các biến cục bộ kết nối với StagingConnect */
             String jdbcURL = StagingConnect.getJdbcUrl();
@@ -164,7 +163,6 @@ public class Staging {
     }
 
     public static void main(String[] args) {
-        String csvFilePath = ControlConnect.getFilePath();
-        System.out.println(csvFilePath);
+        Staging.run_process();
     }
 }

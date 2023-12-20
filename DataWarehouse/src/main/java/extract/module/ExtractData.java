@@ -297,11 +297,12 @@ public class ExtractData {
             /*
                 3.1. Nếu đúng 1 trong hai trường hợp trên=> insert 1 dòng vào table control.logs
             */
-            logDAO.insertLog(source, "Get data from source", "Should be after 17h");
-            /*
-                3.2 Gửi mail thông báo
-            */
-            sendEmail("Extract data from" + source, "Should be after 17h");
+//            logDAO.insertLog(source, "Get data from source", "Should be after 17h");
+//            /*
+//                3.2 Gửi mail thông báo
+//            */
+//            sendEmail("Extract data from" + source, "Should be after 17h");
+            givenDate= LocalDate.now().minusDays(1);
 
         }
         /*
@@ -401,5 +402,8 @@ public class ExtractData {
         }
     }
 
+    public static void main(String[] args) throws IOException {
+        new ExtractData().extractData("xosohomnay");
+    }
 
 }
