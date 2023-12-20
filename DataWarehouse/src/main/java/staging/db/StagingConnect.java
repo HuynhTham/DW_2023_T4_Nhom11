@@ -1,5 +1,5 @@
-package staging.DB;
-
+package staging.db;
+import staging.db.ControlConnect;
 
 import java.io.InputStream;
 import java.util.Properties;

@@ -1,4 +1,4 @@
-package staging.DB;
+package staging.db;
 
 
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package staging.DB.init;
+package staging.db.init;
 
 import java.sql.Timestamp;
 public class Logs {

@@ -1,4 +1,4 @@
-package staging.Services;
+package staging.services;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -7,7 +7,7 @@ import java.util.Properties;
 
 
 public class EmailUtils {
-    public static void send(Email email) throws Exception {
+    public static void send(staging.Services.Email email) throws Exception {
         Properties prop = new Properties();
 
         prop.put("mail.smtp.host", "smtp.gmail.com");

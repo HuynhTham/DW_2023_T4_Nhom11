@@ -3,7 +3,7 @@ package test;
 import loadToDatamart.module.GetDataFromDWtoDM;
 import warehouse.dao.datawarehouse.LotteryDAOWareHouse;
 import extract.module.ExtractData;
-import staging.Modules.Staging;
+import staging.modules.Staging;
 
 import java.io.IOException;
 import java.io.PrintStream;

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="265312a4-13c2-47bb-91d1-860597dfcd7e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/Extract/module/ExtractData.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/Extract/module/ExtractData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/Test/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/Test/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/staging/DB/ControlConnect.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/staging/DB/ControlConnect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/staging/DB/StagingConnect.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/staging/DB/StagingConnect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/staging/DB/init/Logs.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/staging/DB/init/Logs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/staging/Modules/Staging.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/staging/Modules/Staging.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/staging/Services/EmailUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/staging/Services/EmailUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/Services/Email.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/Services/Email.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/Services/EmailUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/Services/EmailUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/dao/datawarehouse/LotteryDAOWareHouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/dao/datawarehouse/LotteryDAOWareHouse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/dao/staging/LotteryResultDAOStaging.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/dao/staging/LotteryResultDAOStaging.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/entity/Logs.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/entity/Logs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DataWarehouse/src/main/java/warehouse/example/Main.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="ProjectId" id="2ZcyzwhALZKMPPhweALlEYlSgW2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/datawarehouse/ETLXoSoKienThiet/xosokienthiet/src/main/resources&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\datawarehouse\ETLXoSoKienThiet\xosokienthiet\src\main\resources" />
+      <recent name="D:\datawarehouse\ETLXoSoKienThiet\xosokienthiet\src\main\webapp" />
+      <recent name="D:\datawarehouse\ETLXoSoKienThiet\xosokienthiet\src\main\java" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Tomcat 9.0.76" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.76" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/Index" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="Gradle : com.example : xosokienthiet-1.0-SNAPSHOT.war (exploded)">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="5ae9ae3a-55e0-4cc1-9f32-880b023b9135" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="62898" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="Gradle : com.example : xosokienthiet-1.0-SNAPSHOT.war (exploded)" />
+        </option>
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="265312a4-13c2-47bb-91d1-860597dfcd7e" name="Changes" comment="" />
+      <created>1702735928712</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1702735928712</updated>
+      <workItem from="1702735929759" duration="1862000" />
+      <workItem from="1702750779144" duration="3000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

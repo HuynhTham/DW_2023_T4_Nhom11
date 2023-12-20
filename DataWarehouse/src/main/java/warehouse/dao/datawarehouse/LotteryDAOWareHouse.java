@@ -1,5 +1,9 @@
 package warehouse.dao.datawarehouse;
 
+import loadToDatamart.entity.LotteryResult;
+import org.jdbi.v3.core.statement.Query;
+import warehouse.Services.Email;
+import warehouse.Services.EmailUtils;
 import warehouse.dao.ControlDAO;
 import warehouse.dao.DBContext;
 import warehouse.dao.LogDAO;
@@ -9,6 +13,7 @@ import org.jdbi.v3.core.Handle;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 public class LotteryDAOWareHouse {
@@ -263,6 +268,18 @@ public class LotteryDAOWareHouse {
             return 0;  // hoặc giá trị mặc định khác tùy thuộc vào yêu cầu của bạn
         }
     }
+    public int countLottery(int id_date) {
+        try (Handle handle = loadToDatamart.dao.DBContext.connectWarehouse().open()) {
+            String query = "SELECT count(*) FROM `lottery_result_fact` r JOIN date_dim d ON r.id_date = d.id WHERE d.id = ?";
+            Query lotteryQuery = handle.createQuery(query).bind(0, id_date);
+            return lotteryQuery.mapTo(Integer.class).one();
+        } catch (Exception e) {
+            // Xử lý ngoại lệ (có thể log và/hoặc thông báo)
+            e.printStackTrace(); // In ra thông báo lỗi hoặc sử dụng logger để ghi log
+            // Có thể ném một ngoại lệ khác hoặc trả về một giá trị mặc định tùy thuộc vào yêu cầu
+            return -1; // Ví dụ: Trả về giá trị mặc định, 0 trong trường hợp này
+        }
+    }
 
     //tên tỉnh
     public int getIdprovince(String name) {
@@ -296,7 +313,6 @@ public class LotteryDAOWareHouse {
     public void transferLotteryResultData() {
         if (new LogDAO().isLastLogStatusRunning("xosohomnay", "Load Data From Staging to Data Warehouse", "Success")) {
             new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "Loaded");
-
             return;
         }
         if (new LogDAO().isLastLogStatusRunning("xosohomnay", "Get data from file to Staging", "Success")) {
@@ -305,7 +321,7 @@ public class LotteryDAOWareHouse {
             LotteryResultDAOStaging stagingDAO = new LotteryResultDAOStaging();
             List<Lottery_Result> stagingData = stagingDAO.getAllStagingData(LocalDate.now());
             LotteryDAOWareHouse warehouseDAO = new LotteryDAOWareHouse();
-
+            int id_date_str=-1;
             for (Lottery_Result stagingResult : stagingData) {
                 int id_reward_str = 0;
 
@@ -339,7 +355,7 @@ public class LotteryDAOWareHouse {
                     id_reward_str = warehouseDAO.getReward("0");
 
                 }
-                int id_date_str = warehouseDAO.getIdDate(stagingResult.getDate());
+                 id_date_str = warehouseDAO.getIdDate(stagingResult.getDate());
 
                 // Chuyển đổi từ String sang int
                 int id_province = id_province_str;
@@ -362,102 +378,17 @@ public class LotteryDAOWareHouse {
                 // Insert data into Data Warehouse
                 insertLotteryResult(dataWarehouseResult);
             }
-            new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "Success");
+            int count=warehouseDAO.countLottery(id_date_str);
+            if(count>5){
+                new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "Run");
+
+            }else {
+                new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "Fail");
+
+            }
         } else {
             new LogDAO().insertLog("xosohomnay", "Load Data From Staging to Data Warehouse", "Can not run");
         }
-    }
-
-    public void transferProvinceData() {
-        LotteryResultDAOStaging stagingDAO = new LotteryResultDAOStaging();
-        List<Lottery_Result> stagingData = stagingDAO.getAllStagingData(LocalDate.now());
-
-        for (Lottery_Result stagingResult : stagingData) {
-            Province_Dim provinceDim = new Province_Dim();
-
-            // Map data from Staging to Data Warehouse model
-            provinceDim.setRegion(stagingResult.getRegions());
-            provinceDim.setName(stagingResult.getName_province());
-
-            // Insert data into Data Warehouse
-            insertProvine(provinceDim);
-        }
-    }
-
-    public void transferDateData() {
-        LotteryResultDAOStaging stagingDAO = new LotteryResultDAOStaging();
-        List<Lottery_Result> stagingData = stagingDAO.getAllStagingData(LocalDate.now());
-
-        for (Lottery_Result stagingResult : stagingData) {
-            Date_dim dateDim = new Date_dim();
-
-            // Insert data into Data Warehouse
-            insertDateDim(dateDim);
-        }
-    }
-
-    public void transferRewardData() {
-        try {
-            LotteryResultDAOStaging stagingDAO = new LotteryResultDAOStaging();
-            List<Lottery_Result> stagingData = stagingDAO.getAllStagingData(LocalDate.now());
-
-            for (Lottery_Result stagingResult : stagingData) {
-                // Extract reward data from stagingResult and map it to Reward_dim model
-                String specialPrize = stagingResult.getGiaiDacBiet();
-                String eighthPrize = stagingResult.getTienThuong_Tam();
-                String sevenPrize = stagingResult.getTienThuong_Bay();
-                String sixPrize = stagingResult.getTienThuong_Sau();
-                String fivePrize = stagingResult.getTienThuong_Nam();
-                String fourPrize = stagingResult.getTienThuong_Tu();
-                String threePrize = stagingResult.getTienThuong_Ba();
-                String twoPrize = stagingResult.getTienThuong_Nhat();
-                String firstPrize = stagingResult.getTienThuong_Nhat();
-                LocalDate data_reward = stagingResult.getDate();
-
-                Reward_dim rewardDim = new Reward_dim();
-                rewardDim.setSpecial_prize(specialPrize);
-                rewardDim.setEighth_prize(eighthPrize);
-                rewardDim.setSeventh_prize(sevenPrize);
-                rewardDim.setSixth_prize(sixPrize);
-                rewardDim.setFifth_prize(fivePrize);
-                rewardDim.setFourth_prize(fourPrize);
-                rewardDim.setThird_prize(threePrize);
-                rewardDim.setSecond_prize(twoPrize);
-                rewardDim.setFirst_prize(firstPrize);
-                rewardDim.setDate(data_reward);
-
-                insertReward("reward_dim", rewardDim);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static String getProvinceName(String input) {
-        // Tìm vị trí của "Xổ số"
-        int index = input.indexOf("Xổ số");
-
-        if (index != -1) {
-            // Cắt chuỗi từ vị trí sau "Xổ số" đến hết chuỗi
-            return input.substring(index + "Xổ số".length()).trim();
-        } else {
-            // Nếu không tìm thấy "Xổ số", trả về toàn bộ chuỗi
-            return input;
-        }
-    }
-
-    public static void main(String[] args) {
-
-
-        try {
-            LotteryDAOWareHouse lotteryDAOWareHouse = new LotteryDAOWareHouse();
-            lotteryDAOWareHouse.transferLotteryResultData();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 }
 

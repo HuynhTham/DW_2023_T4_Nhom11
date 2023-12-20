@@ -23,12 +23,4 @@ public class LotteryResultDAOStaging {
         }
     }
 
-    public static void main(String[] args) {
-        LotteryResultDAOStaging daoStaging = new LotteryResultDAOStaging();
-        List<Lottery_Result> stagingData = daoStaging.getAllStagingData(LocalDate.now());
-
-        for (Lottery_Result result : stagingData) {
-            System.out.println(result); // In thông tin của mỗi dòng dữ liệu
-        }
-    }
 }
